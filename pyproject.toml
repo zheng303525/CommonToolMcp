@@ -40,7 +40,7 @@ Repository = "https://github.com/yourusername/common-tool-mcp-server"
 Issues = "https://github.com/yourusername/common-tool-mcp-server/issues"
 
 [project.scripts]
-common-tool-mcp-server = "common_tool_mcp_server.main:sync_main"
+common-tool-mcp-server = "common_tool_mcp_server.main:main"
 
 [project.optional-dependencies]
 dev = [

@@ -492,7 +492,7 @@ class CommonToolMCPServer:
             env_vars = await self.system_client.get_environment_variables()
             return json.dumps([asdict(e) for e in env_vars], indent=2, default=str)
 
-    async def run(
+    def run(
         self,
         transport: str = "stdio",
         host: str = "127.0.0.1",
@@ -506,10 +506,10 @@ class CommonToolMCPServer:
             port: Port number for http/sse transport
         """
         if transport == "stdio":
-            await self.mcp.run("stdio")
+            self.mcp.run(transport="stdio")
         elif transport == "http":
-            await self.mcp.run("http", host=host, port=port)
+            self.mcp.run(transport="http", host=host, port=port)
         elif transport == "sse":
-            await self.mcp.run("sse", host=host, port=port)
+            self.mcp.run(transport="sse", host=host, port=port)
         else:
             raise ValueError(f"Unsupported transport: {transport}") 

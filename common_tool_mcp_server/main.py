@@ -124,7 +124,7 @@ Available Resources:
     return parser.parse_args()
 
 
-async def main() -> None:
+def main() -> None:
     """Main entry point."""
     args = parse_args()
     
@@ -141,7 +141,7 @@ async def main() -> None:
         if args.transport in ["http", "sse"]:
             print(f"Address: {args.host}:{args.port}")
         
-        await server.run(
+        server.run(
             transport=args.transport,
             host=args.host,
             port=args.port
@@ -155,14 +155,6 @@ async def main() -> None:
         sys.exit(1)
 
 
-def sync_main() -> None:
-    """Synchronous entry point for setuptools."""
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        pass
-
-
 if __name__ == "__main__":
-    sync_main() 
+    main() 
  
