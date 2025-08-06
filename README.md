@@ -67,9 +67,32 @@ common-tool-mcp-server
 # Start with debug logging
 common-tool-mcp-server --log-level DEBUG
 
+# Start HTTP server
+common-tool-mcp-server --transport http --host 0.0.0.0 --port 8080
+
+# Start SSE server
+common-tool-mcp-server --transport sse --port 8090
+
+# Custom server name
+common-tool-mcp-server --name "My Common Tools Server"
+
 # Show help
 common-tool-mcp-server --help
 ```
+
+### Transport Options
+
+The server supports multiple transport protocols:
+
+- **stdio**: Default mode for MCP client integration
+- **http**: HTTP-based transport for web applications
+- **sse**: Server-Sent Events transport for real-time applications
+
+Command line options:
+- `--transport {stdio,http,sse}`: Choose transport protocol
+- `--host HOST`: Host address for http/sse (default: 127.0.0.1)
+- `--port PORT`: Port number for http/sse (default: 8000)
+- `--name NAME`: Custom server name
 
 ### VS Code Integration
 
