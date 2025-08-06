@@ -35,6 +35,9 @@ Examples:
   # Run with debug logging
   common-tool-mcp-server --log-level DEBUG
   
+  # Start HTTP server
+  common-tool-mcp-server --transport http --host 0.0.0.0 --port 8080
+  
   # Show version
   common-tool-mcp-server --version
 
@@ -77,6 +80,35 @@ Available Resources:
     )
     
     parser.add_argument(
+        "--name",
+        type=str,
+        default="Common Tool MCP Server",
+        help="Server name (default: 'Common Tool MCP Server')"
+    )
+    
+    parser.add_argument(
+        "--transport",
+        type=str,
+        choices=["stdio", "http", "sse"],
+        default="stdio",
+        help="Transport protocol (default: stdio)"
+    )
+    
+    parser.add_argument(
+        "--host",
+        type=str,
+        default="127.0.0.1",
+        help="Host address for http/sse transport (default: 127.0.0.1)"
+    )
+    
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="Port number for http/sse transport (default: 8000)"
+    )
+    
+    parser.add_argument(
         "--log-level",
         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
         default="INFO",
@@ -100,18 +132,26 @@ async def main() -> None:
     setup_logging(args.log_level)
     logger = logging.getLogger(__name__)
     
-    logger.info("Starting Common Tool MCP Server...")
-    
     try:
         # Create and run the server
-        server = CommonToolMCPServer()
-        await server.run()
+        server = CommonToolMCPServer(name=args.name)
+        
+        print(f"Starting {args.name}...")
+        print(f"Transport: {args.transport}")
+        if args.transport in ["http", "sse"]:
+            print(f"Address: {args.host}:{args.port}")
+        
+        await server.run(
+            transport=args.transport,
+            host=args.host,
+            port=args.port
+        )
         
     except KeyboardInterrupt:
-        logger.info("Received interrupt signal, shutting down...")
-        
+        print("\nServer stopped by user.")
+        sys.exit(0)
     except Exception as e:
-        logger.error(f"Server error: {str(e)}")
+        print(f"Error starting server: {e}", file=sys.stderr)
         sys.exit(1)
 
 
